@@ -1,7 +1,8 @@
 package com.example.jetbrainstest.tests;
 
 import com.example.jetbrainstest.MyExtension;
-import com.example.jetbrainstest.pages.CLionPage;
+import com.example.jetbrainstest.pages.clionpages.CLionDownloadPage;
+import com.example.jetbrainstest.pages.clionpages.CLionPage;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.RepeatedTest;
@@ -19,6 +20,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 @ExtendWith(MyExtension.class)
 public class CLionTest extends BaseTest {
     private CLionPage cLionPage;
+    private CLionDownloadPage cLionDownloadPage;
 
     @BeforeEach
     @Override
@@ -26,22 +28,38 @@ public class CLionTest extends BaseTest {
         super.setUp();
         getDriver().get("https://www.jetbrains.com/clion/");
         cLionPage = new CLionPage(getDriver());
+        cLionDownloadPage = new CLionDownloadPage(getDriver());
     }
 
     @Test
-    @DisplayName("Кнопка скачивания активна")
-    public void downloadButtonCheck() {
+    @DisplayName("Активна кнопка скачивания на главной странице CLion")
+    public void downloadButtonCheckMainPage() {
         assertTrue(cLionPage.checkIfDownloadButtonIsClickable(), "Кнопка скачивания не активна");
     }
 
     @Test
-    @DisplayName("Кнопка 'what's new' активна")
+    @DisplayName("Активна кнопка скачивания на странице загрузки CLion")
+    public void downloadButtonCheckDownloadPage() {
+        cLionPage.clickDownloadButton();
+        assertTrue(cLionDownloadPage.checkIfDownloadButtonIsClickable(), "Кнопка скачивания не активна");
+    }
+
+    @Test
+    @DisplayName("Активна кнопка скачивания файла в формате zip")
+    public void checkButtonInZipFormat() {
+        cLionPage.clickDownloadButton();
+        cLionDownloadPage.clickExe();
+        assertTrue(cLionDownloadPage.checkIfZipButtonIsClickable(), "Кнопка скачивания не активна");
+    }
+
+    @Test
+    @DisplayName("Активна кнопка 'what's new'")
     public void whatIsNewButtonCheck() {
         assertTrue(cLionPage.checkIfwhatIsNewButtonClickable(), "Кнопка 'what's new' не активна");
     }
 
     @Test
-    @DisplayName("Воспроизведено видео соответсвующее программе CLion")
+    @DisplayName("Воспроизведение видео соответсвующее программе CLion")
     public void playerCheck() {
         String titleVideo = cLionPage.getNameOfVideo();
         assertEquals(titleVideo, "CLion Quick Tour", "Воспроизводится другое видео");
@@ -83,7 +101,7 @@ public class CLionTest extends BaseTest {
     @ParameterizedTest(name = "#{index} - проверка на НЕ валидность email {0}")
     @CsvSource({"sldkfj", "slkf@", "qwer@lsakjf"})
     @DisplayName("Ввод невалидного email")
-    public void enterEmailWithoutAt(String email) {
+    public void enterInvalidEmail(String email) {
         String warningAnswer = cLionPage.enterInvalidEmailAndGetWarning(email);
         assertEquals(warningAnswer, "Please enter a valid email address.", "Текст сообщения некорректен");
     }
@@ -104,4 +122,11 @@ public class CLionTest extends BaseTest {
         assertEquals(countOfScreenshot, 3, "Колиечество скриншотов для в разделе 'Code analysis on the fly' не равно 3");
     }
 
+    @Test
+    @DisplayName("Отображение загловока в окне с инструкций по установке")
+    public void checkIfInstructionHeaderTextIsDisplayed() {
+        cLionPage.clickDownloadButton();
+        cLionDownloadPage.clickInstruction();
+        assertTrue(cLionDownloadPage.checkIfHeaderInstructionIsDisplayed(), "Заголовок не отображается");
+    }
 }
