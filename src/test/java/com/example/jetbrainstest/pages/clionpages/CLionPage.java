@@ -87,7 +87,7 @@ public class CLionPage {
         downloadButton.click();
     }
 
-    public Boolean checkIfwhatIsNewButtonClickable() {
+    public Boolean checkIfWhatIsNewButtonClickable() {
         LOG.info("Проверка активности кнопки 'what's new'");
         return whatIsNewButton.isEnabled();
     }

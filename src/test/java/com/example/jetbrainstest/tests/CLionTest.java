@@ -53,7 +53,7 @@ public class CLionTest extends BaseTest {
     @Test
     @DisplayName("Активна кнопка 'what's new'")
     public void whatIsNewButtonCheck() {
-        assertTrue(cLionPage.checkIfwhatIsNewButtonClickable(), "Кнопка 'what's new' не активна");
+        assertTrue(cLionPage.checkIfWhatIsNewButtonClickable(), "Кнопка 'what's new' не активна");
     }
 
     @Disabled("Видеоролик убран со страницы https://www.jetbrains.com/clion/")
