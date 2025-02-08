@@ -7,6 +7,8 @@ import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
 import org.slf4j.LoggerFactory;
 
+import static com.example.jetbrainstest.MyWait.myWait;
+
 import java.util.List;
 
 //page url = https://www.jetbrains.com/clion/
@@ -15,10 +17,10 @@ public class CLionPage {
     private final AllureLogger LOG = new AllureLogger(LoggerFactory.getLogger(CLionPage.class));
     private final WebDriver driver;
 
-    @FindBy(css = "a[href=\"/clion/download/\"]")
+    @FindBy(xpath = "//a[contains(text(),'Download CLion')]")
     private WebElement downloadButton;
 
-    @FindBy(css = "a[href=\"/clion/whatsnew/\"]")
+    @FindBy(css = "#js-menu-second-desktop a[href=\"/clion/whatsnew/\"]")
     private WebElement whatIsNewButton;
 
     @FindBy(css = "button[data-test=\"youtube-player-button\"]")
@@ -30,14 +32,14 @@ public class CLionPage {
     @FindBy(css = "#player a[href^=\"https://www.youtube.com/watch\"]")
     private WebElement videoTitle;
 
-    @FindBy(css = ".social-footer__link")
+    @FindBy(css = "[data-test=\"social-footer-menu-item\"] a")
     private List<WebElement> followButtons;
 
     @FindBy(css = "[name='Email']")
     private WebElement emailInput;
 
     @FindBy(xpath = "//button[contains(text(), 'Submit')]")
-    private  WebElement emailSubmit;
+    private WebElement emailSubmit;
 
     @FindBy(css = ".social-footer p:last-child")
     private WebElement messageAfterEnteringValidEmail;
@@ -54,6 +56,9 @@ public class CLionPage {
     @FindBy(css = "h2 + div img[alt=\"Code Analysis screenshot\"]")
     private List<WebElement> ScreenshotsInCodeAnalysisSection;
 
+    @FindBy(css = "[data-jetbrains-cookies-banner-action=\"ACCEPT_ALL\"]")
+    private WebElement acceptAllFromCookiesForm;
+
     public CLionPage(WebDriver driver) {
         this.driver = driver;
         PageFactory.initElements(driver, this);
@@ -61,6 +66,15 @@ public class CLionPage {
 
     public Integer getCountOfScreenshotsInCodeAnalysisSection() {
         return ScreenshotsInCodeAnalysisSection.size();
+    }
+
+    public void clickAcceptAllFromCookiesForm() {
+        if (acceptAllFromCookiesForm.isDisplayed()) {
+            LOG.info("Кликнуть 'Принять куки'");
+            acceptAllFromCookiesForm.click();
+        } else {
+            LOG.info("Окно с куками не отобразилось");
+        }
     }
 
     public Boolean checkIfDownloadButtonIsClickable() {
@@ -102,21 +116,22 @@ public class CLionPage {
     }
 
     public String getAnswerAfterEnteringValidEmail(String email) {
-        enterEmail(email);
         LOG.info("Получение сообщения при вводе валидного email");
+        enterEmail(email);
         return messageAfterEnteringValidEmail.getText();
     }
 
     public String getWarningAfterEnteringInvalidEmail(String email) {
-        enterEmail(email);
         LOG.info("Получение сообщения при вводе невалидного email");
+        enterEmail(email);
         return messageAfterEnteringInvalidEmail.getText();
     }
 
     public void changeLanguage(String language) {
-        languageButton.click();
         LOG.infoWithScreenshot("Смена языка страницы на указанный");
-        for (WebElement i: listOfLanguages) {
+        myWait(5).visible(languageButton);
+        languageButton.click();
+        for (WebElement i : listOfLanguages) {
             if (i.getText().equals(language)) {
                 i.click();
                 break;

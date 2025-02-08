@@ -3,10 +3,7 @@ package com.example.jetbrainstest.tests;
 import com.example.jetbrainstest.MyExtension;
 import com.example.jetbrainstest.pages.clionpages.CLionDownloadPage;
 import com.example.jetbrainstest.pages.clionpages.CLionPage;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.RepeatedTest;
-import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.*;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
@@ -28,6 +25,7 @@ public class CLionTest extends BaseTest {
         getDriver().get("https://www.jetbrains.com/clion/");
         cLionPage = new CLionPage(getDriver());
         cLionDownloadPage = new CLionDownloadPage(getDriver());
+        cLionPage.clickAcceptAllFromCookiesForm();
     }
 
     @Test
@@ -47,6 +45,7 @@ public class CLionTest extends BaseTest {
     @DisplayName("Активна кнопка скачивания файла в формате zip")
     public void checkButtonInZipFormat() {
         cLionPage.clickDownloadButton();
+        cLionDownloadPage.clickWindowsButtonIfNotSelected();
         cLionDownloadPage.clickExe();
         assertTrue(cLionDownloadPage.checkIfZipButtonIsClickable(), "Кнопка скачивания не активна");
     }
@@ -57,11 +56,12 @@ public class CLionTest extends BaseTest {
         assertTrue(cLionPage.checkIfwhatIsNewButtonClickable(), "Кнопка 'what's new' не активна");
     }
 
+    @Disabled("Видеоролик убран со страницы https://www.jetbrains.com/clion/")
     @Test
     @DisplayName("Воспроизведение видео соответсвующее программе CLion")
     public void playerCheck() {
         String titleVideo = cLionPage.getNameOfVideo();
-        assertEquals(titleVideo, "CLion Quick Tour", "Воспроизводится другое видео");
+        assertEquals("CLion Quick Tour", titleVideo, "Воспроизводится другое видео");
     }
 
     @ParameterizedTest(name = "#{index} - активность кнопки №{0}")
@@ -72,6 +72,7 @@ public class CLionTest extends BaseTest {
         assertTrue(StatusOfOneButton, String.format("Кнопка №%d неактивна", numberButton));
     }
 
+    @Disabled("Поле с email убрано со страницы https://www.jetbrains.com/clion/")
     @Test
     @DisplayName("Возможность повторного ввода валидного email спустя 2 минуты")
     public void enterTwoTimesValidEmail() throws InterruptedException {
@@ -84,16 +85,18 @@ public class CLionTest extends BaseTest {
 
         getDriver().navigate().refresh();
         String answerAfterEnteringEmail = cLionPage.getAnswerAfterEnteringValidEmail(email);
-        assertEquals(answerAfterEnteringEmail, "Thanks for your request!", "Ooopps, something is wrong (I didn't get the right answer)");
+        assertEquals("Thanks for your request!", answerAfterEnteringEmail, "Ooopps, something is wrong (I didn't get the right answer)");
     }
 
+    @Disabled("Поле с email убрано со страницы https://www.jetbrains.com/clion/")
     @Test
     @DisplayName("Ввод пустого email")
     public void enterEmptyEmail() {
         String warningAnswer = cLionPage.getWarningAfterEnteringInvalidEmail("");
-        assertEquals(warningAnswer, "This field is required.", "Текст сообщения некорректен");
+        assertEquals("This field is required.", warningAnswer, "Текст сообщения некорректен");
     }
 
+    @Disabled("Поле с email убрано со страницы https://www.jetbrains.com/clion/")
     // Тесты на ввод невалидного email с разными положениями символа @
     // Другие проверки email не стал перечислять, чтобы не захломлять. Указал только три в качестве примера.
     @ParameterizedTest(name = "#{index} - проверка на НЕ валидность email {0}")
@@ -101,7 +104,7 @@ public class CLionTest extends BaseTest {
     @DisplayName("Ввод невалидного email")
     public void enterInvalidEmail(String email) {
         String warningAnswer = cLionPage.getWarningAfterEnteringInvalidEmail(email);
-        assertEquals(warningAnswer, "Please enter a valid email address.", "Текст сообщения некорректен");
+        assertEquals("Please enter a valid email address.", warningAnswer, "Текст сообщения некорректен");
     }
 
     @RepeatedTest(5) // в некоторых случаях страница не переключается (причина не выяснена)
@@ -110,14 +113,15 @@ public class CLionTest extends BaseTest {
         String language = "Русский";
         cLionPage.changeLanguage(language);
         String urlPage = getDriver().getCurrentUrl();
-        assertEquals(urlPage, "https://www.jetbrains.com/ru-ru/clion/", "Открыта страница не с русским языком");
+        assertEquals("https://www.jetbrains.com/ru-ru/clion/", urlPage, "Открыта страница не с русским языком");
     }
 
+    @Disabled("Раздел убран")
     @Test
     @DisplayName("В разделе 'Code analysis on the fly' есть три фото")
     public void checkScreenshotFromCodeAnalysisSection() {
         int countOfScreenshot = cLionPage.getCountOfScreenshotsInCodeAnalysisSection();
-        assertEquals(countOfScreenshot, 3, "Колиечество скриншотов для в разделе 'Code analysis on the fly' не равно 3");
+        assertEquals(3, countOfScreenshot, "Колиечество скриншотов для в разделе 'Code analysis on the fly' не равно 3");
     }
 
     @Test

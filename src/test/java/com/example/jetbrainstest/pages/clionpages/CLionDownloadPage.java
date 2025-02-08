@@ -16,16 +16,19 @@ public class CLionDownloadPage {
         PageFactory.initElements(driver, this);
     }
 
-    @FindBy(css = "a[href=\"/clion/download/\"]")
+    @FindBy(xpath = "//a[contains(text(),'Download')]")
     private WebElement downloadButton;
 
-    @FindBy(xpath = "//button[contains(text(), '.exe')]")
+    @FindBy(xpath = "//span[contains(text(), '.exe')]")
     private WebElement exeButton;
 
-    @FindBy(xpath = "//button[contains(text(), '.exe')]")
+    @FindBy(xpath = "//div[contains(text(), 'Windows')]/..")
+    private WebElement windowsButton;
+
+    @FindBy(xpath = "//span[contains(text(), '.zip')]")
     private WebElement zipButton;
 
-    @FindBy(xpath = "//span[contains(text(), 'Installation instructions')]")
+    @FindBy(xpath = "//div[3]//span[contains(text(), 'Installation instructions')]")
     private WebElement InstructionButton;
 
     @FindBy(xpath = "//div[contains(text(), 'Installation instructions')]")
@@ -39,6 +42,19 @@ public class CLionDownloadPage {
     public void clickExe() {
         LOG.info("Клик по выпадающему списку .exe");
         exeButton.click();
+    }
+
+    public void clickWindowsButtonIfNotSelected() {
+        LOG.info("Клик по кнопке Windows, если кнопка неактивна");
+        Boolean windowsButtonIsSelected = checkWindowsButtonIfNotSelected();
+        if (!windowsButtonIsSelected)
+            windowsButton.click();
+    }
+
+    public Boolean checkWindowsButtonIfNotSelected() {
+        LOG.info("Проверка, что кнопка Windows выбрана");
+        String attributeDataTestOfWindowsButton = windowsButton.getAttribute("data-test");
+        return attributeDataTestOfWindowsButton.equals("tab tab-selected");
     }
 
     public Boolean checkIfZipButtonIsClickable() {
