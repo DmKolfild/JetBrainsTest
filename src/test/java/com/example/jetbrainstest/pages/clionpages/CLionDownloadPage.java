@@ -7,6 +7,7 @@ import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
 import org.slf4j.LoggerFactory;
 
+//page url = https://www.jetbrains.com/clion/download/
 public class CLionDownloadPage {
     private final AllureLogger LOG = new AllureLogger(LoggerFactory.getLogger(CLionDownloadPage.class));
     private final WebDriver driver;

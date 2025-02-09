@@ -4,6 +4,7 @@ import com.example.jetbrainstest.MyExtension;
 import com.example.jetbrainstest.pages.clionpages.CLionDownloadPage;
 import com.example.jetbrainstest.pages.clionpages.CLionPage;
 import org.junit.jupiter.api.*;
+import org.junit.jupiter.api.condition.EnabledIfEnvironmentVariable;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
@@ -75,14 +76,23 @@ public class CLionTest extends BaseTest {
     @Disabled("Поле с email убрано со страницы https://www.jetbrains.com/clion/")
     @Test
     @DisplayName("Возможность повторного ввода валидного email спустя 2 минуты")
-    public void enterTwoTimesValidEmail() throws InterruptedException {
+    public void enterTwoTimesValidEmailWithWaiting() throws InterruptedException {
         String email = "qwer@google.com";
         cLionPage.enterEmail(email);
-
-        // следующие две строки можно заменить местами (одну закомментировать, другую раскомментировать)
         TimeUnit.MINUTES.sleep(2);
-        // getDriver().manage().deleteAllCookies(); // раскомментировать в случае полного нежелания ожидать 2 минуты
+        getDriver().navigate().refresh();
+        String answerAfterEnteringEmail = cLionPage.getAnswerAfterEnteringValidEmail(email);
+        assertEquals("Thanks for your request!", answerAfterEnteringEmail, "Ooopps, something is wrong (I didn't get the right answer)");
+    }
 
+    @Disabled("Поле с email убрано со страницы https://www.jetbrains.com/clion/")
+    @Test
+    @EnabledIfEnvironmentVariable(named = "DO_WE_HAVE_TIME", matches = "YES")
+    @DisplayName("Возможность повторного ввода валидного email спустя 2 минуты")
+    public void enterTwoTimesValidEmailWithoutWaiting() throws InterruptedException {
+        String email = "qwer@google.com";
+        cLionPage.enterEmail(email);
+        getDriver().manage().deleteAllCookies();
         getDriver().navigate().refresh();
         String answerAfterEnteringEmail = cLionPage.getAnswerAfterEnteringValidEmail(email);
         assertEquals("Thanks for your request!", answerAfterEnteringEmail, "Ooopps, something is wrong (I didn't get the right answer)");

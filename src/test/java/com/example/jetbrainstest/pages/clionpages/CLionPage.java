@@ -20,19 +20,19 @@ public class CLionPage {
     @FindBy(xpath = "//a[contains(text(),'Download CLion')]")
     private WebElement downloadButton;
 
-    @FindBy(css = "#js-menu-second-desktop a[href=\"/clion/whatsnew/\"]")
+    @FindBy(css = "#js-menu-second-desktop a[href='/clion/whatsnew/']")
     private WebElement whatIsNewButton;
 
-    @FindBy(css = "button[data-test=\"youtube-player-button\"]")
+    @FindBy(css = "button[data-test='youtube-player-button']")
     private WebElement imgVideoButton;
 
-    @FindBy(css = "iframe[title=\"CLion Quick Tour\"]")
+    @FindBy(css = "iframe[title='CLion Quick Tour']")
     private WebElement videoIframe;
 
-    @FindBy(css = "#player a[href^=\"https://www.youtube.com/watch\"]")
+    @FindBy(css = "#player a[href^='https://www.youtube.com/watch']")
     private WebElement videoTitle;
 
-    @FindBy(css = "[data-test=\"social-footer-menu-item\"] a")
+    @FindBy(css = "[data-test='social-footer-menu-item'] a")
     private List<WebElement> followButtons;
 
     @FindBy(css = "[name='Email']")
@@ -44,19 +44,19 @@ public class CLionPage {
     @FindBy(css = ".social-footer p:last-child")
     private WebElement messageAfterEnteringValidEmail;
 
-    @FindBy(css = "[data-test=\"error-message\"]")
+    @FindBy(css = "[data-test='error-message']")
     private WebElement messageAfterEnteringInvalidEmail;
 
     @FindBy(css = "[data-test='language-picker']")
     private WebElement languageButton;
 
-    @FindBy(css = "div > span[data-test=\"list-item\"] > span")
+    @FindBy(css = "div > span[data-test='list-item'] > span")
     private List<WebElement> listOfLanguages;
 
-    @FindBy(css = "h2 + div img[alt=\"Code Analysis screenshot\"]")
+    @FindBy(css = "h2 + div img[alt='Code Analysis screenshot']")
     private List<WebElement> ScreenshotsInCodeAnalysisSection;
 
-    @FindBy(css = "[data-jetbrains-cookies-banner-action=\"ACCEPT_ALL\"]")
+    @FindBy(css = "[data-jetbrains-cookies-banner-action='ACCEPT_ALL']")
     private WebElement acceptAllFromCookiesForm;
 
     public CLionPage(WebDriver driver) {
