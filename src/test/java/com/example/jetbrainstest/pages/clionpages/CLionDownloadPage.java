@@ -20,7 +20,7 @@ public class CLionDownloadPage {
     @FindBy(xpath = "//a[contains(text(),'Download')]")
     private WebElement downloadButton;
 
-    @FindBy(xpath = "//span[contains(text(), '.exe')]")
+    @FindBy(xpath = "//button[@data-test='dropdown-trigger']/span[contains(text(), '.exe')]")
     private WebElement exeButton;
 
     @FindBy(xpath = "//div[contains(text(), 'Windows')]/..")
@@ -29,7 +29,7 @@ public class CLionDownloadPage {
     @FindBy(xpath = "//span[contains(text(), '.zip')]")
     private WebElement zipButton;
 
-    @FindBy(xpath = "//div[3]//span[contains(text(), 'Installation instructions')]")
+    @FindBy(xpath = "//div[@class='wt-css-content-switcher__block']//span[contains(text(), 'Installation instructions')]")
     private WebElement InstructionButton;
 
     @FindBy(xpath = "//div[contains(text(), 'Installation instructions')]")
@@ -47,12 +47,12 @@ public class CLionDownloadPage {
 
     public void clickWindowsButtonIfNotSelected() {
         LOG.info("Клик по кнопке Windows, если кнопка неактивна");
-        Boolean windowsButtonIsSelected = checkWindowsButtonIfNotSelected();
+        Boolean windowsButtonIsSelected = checkWindowsButton();
         if (!windowsButtonIsSelected)
             windowsButton.click();
     }
 
-    public Boolean checkWindowsButtonIfNotSelected() {
+    public Boolean checkWindowsButton() {
         LOG.info("Проверка, что кнопка Windows выбрана");
         String attributeDataTestOfWindowsButton = windowsButton.getAttribute("data-test");
         return attributeDataTestOfWindowsButton.equals("tab tab-selected");
