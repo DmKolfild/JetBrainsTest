@@ -47,8 +47,11 @@ public class CLionPage {
     @FindBy(css = "[data-test='error-message']")
     private WebElement messageAfterEnteringInvalidEmail;
 
-    @FindBy(css = "[data-test='language-picker']")
-    private WebElement languageButton;
+    @FindBy(css = "header [data-test='language-picker']")
+    private WebElement languageButtonInTheHeader;
+
+    @FindBy(css = "footer [data-test='language-picker']")
+    private WebElement languageButtonInTheFooter;
 
     @FindBy(css = "div > span[data-test='list-item'] > span")
     private List<WebElement> listOfLanguages;
@@ -129,8 +132,8 @@ public class CLionPage {
 
     public void changeLanguage(String language) {
         LOG.infoWithScreenshot("Смена языка страницы на указанный");
-        myWait(5).visible(languageButton);
-        languageButton.click();
+        myWait(5).visible(languageButtonInTheHeader);
+        languageButtonInTheHeader.click();
         for (WebElement i : listOfLanguages) {
             if (i.getText().equals(language)) {
                 i.click();

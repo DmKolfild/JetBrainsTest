@@ -117,7 +117,7 @@ public class CLionTest extends BaseTest {
         assertEquals("Please enter a valid email address.", warningAnswer, "Текст сообщения некорректен");
     }
 
-    @RepeatedTest(5) // в некоторых случаях страница не переключается (причина не выяснена)
+    @Test
     @DisplayName("Смена языка страницы на русский")
     public void changeLanguageOfPage() {
         String language = "Русский";
@@ -135,9 +135,10 @@ public class CLionTest extends BaseTest {
     }
 
     @Test
-    @DisplayName("Отображение загловока в окне с инструкций по установке")
-    public void checkIfInstructionHeaderTextIsDisplayed() {
+    @DisplayName("Отображение заголовка в окне с инструкций по установке")
+    public void checkIfInstructionHeaderTextIsDisplayedForWindows() {
         cLionPage.clickDownloadButton();
+        cLionDownloadPage.clickWindowsButtonIfNotSelected();
         cLionDownloadPage.clickInstruction();
         assertTrue(cLionDownloadPage.checkIfHeaderInstructionIsDisplayed(), "Заголовок не отображается");
     }
