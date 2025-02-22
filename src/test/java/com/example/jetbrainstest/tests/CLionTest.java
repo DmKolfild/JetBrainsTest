@@ -75,6 +75,7 @@ public class CLionTest extends BaseTest {
 
     @Disabled("Поле с email убрано со страницы https://www.jetbrains.com/clion/")
     @Test
+    @EnabledIfEnvironmentVariable(named = "DO_WE_HAVE_TIME", matches = "YES")
     @DisplayName("Возможность повторного ввода валидного email спустя 2 минуты")
     public void enterTwoTimesValidEmailWithWaiting() throws InterruptedException {
         String email = "qwer@google.com";
@@ -87,9 +88,8 @@ public class CLionTest extends BaseTest {
 
     @Disabled("Поле с email убрано со страницы https://www.jetbrains.com/clion/")
     @Test
-    @EnabledIfEnvironmentVariable(named = "DO_WE_HAVE_TIME", matches = "YES")
     @DisplayName("Возможность повторного ввода валидного email спустя 2 минуты")
-    public void enterTwoTimesValidEmailWithoutWaiting() throws InterruptedException {
+    public void enterTwoTimesValidEmailWithoutWaiting() {
         String email = "qwer@google.com";
         cLionPage.enterEmail(email);
         getDriver().manage().deleteAllCookies();
